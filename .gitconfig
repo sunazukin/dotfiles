@@ -1,0 +1,23 @@
+[user]
+	name = Kyohei Suzuki
+	email = suzukixkyohei@gmail.com
+[init]
+	defaultBranch = main
+[alias]
+	br = branch
+	cm = commit
+	co = checkout
+	sw = switch
+	lga = log --graph --oneline --decorate --all
+[core]
+	editor = vim
+[fetch]
+	prune = true
+[credential]
+	helper = osxkeychain
+[http]
+	postBuffer = 524288000
+[ghq]
+	user = sunazukin
+[url "git@github.com:"]
+	insteadOf = https://github.com/
