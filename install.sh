@@ -10,7 +10,6 @@ files=(
   .gitconfig
   .tmux.conf
   .local/bin/claude-pane
-  .config/mise/config.toml
   .config/git/config
   .config/git/ignore
   .config/gh/config.yml
