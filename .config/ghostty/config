@@ -1,0 +1,35 @@
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+
+keybind = shift+enter=text:\x1b\r
+
+# --- 見た目・フォント ---
+# 行間を少し広げてモダンにする
+adjust-cell-height = 10%
+
+# --- テーマ ---
+theme = Mariana
+
+# --- ウィンドウ・透過度 ---
+# 背景を透過
+background-opacity = 1
+
+# ブラー（すりガラス効果）
+background-blur-radius = 20
+
+# ウィンドウ内の余白を入れて圧迫感を減らす
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+
+# 背景
+background-image = /Users/suzuki/Downloads/cat-image.jpg
+background-image-opacity = 0.2
+background-image-fit = cover
+
+# --- 操作性 ---
+# 選択しただけでクリップボードにコピー
+copy-on-select = clipboard
+
+# クリップボードの読み書きを許可
+clipboard-read = allow
+clipboard-write = allow

@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# tmux + Claude Code でペイン起動（gwq worktree 付き）
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: claude-pane <実装したい内容>"
+  exit 1
+fi
+
+prompt="$*"
+claude_prompt="以下の内容をまずプランモードで計画してから実装してください: $prompt"
+prompt_file=$(mktemp /tmp/claude-pane-XXXXXX)
+printf '%s' "$claude_prompt" > "$prompt_file"
+
+# Claude CLI で英語ブランチ名を自動生成
+echo "Generating branch name..."
+branch_name=$(claude -p "You are a git branch name generator. Convert this feature description to a git branch name. Rules: 1) English only 2) kebab-case 3) Add feature/ prefix 4) Max 5 words after prefix 5) Output ONLY the branch name. Description: $prompt") || {
+  echo "Error: ブランチ名の生成に失敗しました"
+  exit 1
+}
+branch_name=$(echo "$branch_name" | head -1 | xargs | tr -d '`')
+
+if [[ -z "$branch_name" ]]; then
+  echo "Error: ブランチ名が空です"
+  exit 1
+fi
+
+echo "Branch: $branch_name"
+
+# worktree を作成
+gwq add -b "$branch_name" || exit 1
+
+# tmux 外 → 新しいセッションを作成してアタッチ
+if [[ -z "${TMUX:-}" ]]; then
+  tmux new-session -d -s "claude-$$"
+  tmux send-keys -t "claude-$$" "dev && claude \"\$(cat $prompt_file)\" && rm $prompt_file" Enter
+  tmux attach -t "claude-$$"
+  exit
+fi
+
+# tmux 内 → ペイン分割（最大3列x2行 = 6ペイン）
+pane_count=$(tmux list-panes | wc -l | tr -d ' ')
+if (( pane_count >= 6 )); then
+  # claude が起動していないペインを探す
+  idle_pane=$(tmux list-panes -F '#{pane_id} #{pane_current_command}' | awk 'NR > 1 && $2 ~ /^(bash|zsh|fish|sh)$/ { print $1; exit }')
+  if [[ -z "$idle_pane" ]]; then
+    echo "Error: 空きペインがありません（左上を除く全ペインで claude が実行中）"
+    exit 1
+  fi
+  tmux select-pane -t "$idle_pane"
+  tmux send-keys -t "$idle_pane" "dev && claude \"\$(cat $prompt_file)\" && rm $prompt_file" Enter
+  exit
+fi
+
+cols=$(tmux list-panes -F '#{pane_left}' | sort -un | wc -l | tr -d ' ')
+
+if (( cols < 3 )); then
+  tmux split-window -h
+  if (( cols == 2 )); then
+    # 3列目追加時、均等幅に調整
+    tmux select-layout even-horizontal
+  fi
+else
+  # 1ペインしかない列の中で最も左の列のペインを特定して垂直分割
+  target_pane=$(tmux list-panes -F '#{pane_id} #{pane_left}' | awk '
+    { count[$2]++; if (count[$2] == 1) first[$2] = $1 }
+    END {
+      min_left = -1
+      for (left in count) {
+        if (count[left] == 1 && (min_left == -1 || left + 0 < min_left + 0)) {
+          min_left = left
+        }
+      }
+      if (min_left != -1) print first[min_left]
+    }
+  ')
+  tmux split-window -v -t "$target_pane"
+fi
+tmux send-keys "dev && claude \"\$(cat $prompt_file)\" && rm $prompt_file" Enter
