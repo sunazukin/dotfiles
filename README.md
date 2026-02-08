@@ -17,7 +17,6 @@ cd dotfiles
 | `.gitconfig` | `~/.gitconfig` |
 | `.tmux.conf` | `~/.tmux.conf` |
 | `.local/bin/claude-pane` | `~/.local/bin/claude-pane` |
-| `.config/mise/config.toml` | `~/.config/mise/config.toml` |
 | `.config/git/config` | `~/.config/git/config` |
 | `.config/git/ignore` | `~/.config/git/ignore` |
 | `.config/gh/config.yml` | `~/.config/gh/config.yml` |
