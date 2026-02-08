@@ -22,7 +22,7 @@ window-padding-y = 10
 window-padding-balance = true
 
 # 背景
-background-image = /Users/suzuki/Downloads/cat-image.jpg
+background-image = ~/Downloads/cat-image.jpg
 background-image-opacity = 0.2
 background-image-fit = cover
 
