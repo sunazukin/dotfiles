@@ -2,6 +2,7 @@
 alias ll='ls -al'
 alias python='python3'
 alias k='kubectl'
+alias awsume='. awsume'
 
 # zsh-completions&autosuggestions
 if type brew &>/dev/null; then
