@@ -12,6 +12,7 @@ files=(
   .local/bin/claude-pane
   .config/git/config
   .config/git/ignore
+  .config/git/hooks/pre-commit
   .config/gh/config.yml
   .config/gwq/config.toml
   .config/ghostty/config

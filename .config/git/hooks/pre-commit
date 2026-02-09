@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# main/develop/master ブランチへの直接コミットを禁止
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+case "$branch" in
+  main|develop|master)
+    echo "Error: $branch ブランチへの直接コミットは禁止されています。"
+    echo "feature ブランチを作成してください。"
+    exit 1
+    ;;
+esac
