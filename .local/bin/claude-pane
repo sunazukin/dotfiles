@@ -11,6 +11,7 @@ fi
 prompt="$*"
 claude_prompt="以下の内容をまずプランモードで計画してから実装してください: $prompt"
 prompt_file=$(mktemp /tmp/claude-pane-XXXXXX)
+trap 'rm -f "$prompt_file"' EXIT
 printf '%s' "$claude_prompt" > "$prompt_file"
 
 # Claude CLI で英語ブランチ名を自動生成
@@ -31,10 +32,27 @@ echo "Branch: $branch_name"
 # worktree を作成
 gwq add -b "$branch_name" || exit 1
 
+# worktree のパスを取得（fzf を使わず直接取得）
+worktree_path=$(gwq get "$branch_name" 2>/dev/null)
+if [[ -z "$worktree_path" || ! -d "$worktree_path" ]]; then
+  echo "Error: ワークツリーのパスを取得できませんでした"
+  exit 1
+fi
+
+echo "Worktree: $worktree_path"
+
+# tmux ペインに引き渡すので trap を解除（ペイン内で rm される）
+trap - EXIT
+
+# ワークツリー移動 + セットアップ + Claude 起動のコマンドを構築
+launch_cmd="cd '${worktree_path}'"
+launch_cmd+=" && { [[ -x scripts/setup-worktree.sh ]] && ./scripts/setup-worktree.sh || true; }"
+launch_cmd+=" && claude \"\$(cat $prompt_file)\" && rm $prompt_file"
+
 # tmux 外 → 新しいセッションを作成してアタッチ
 if [[ -z "${TMUX:-}" ]]; then
   tmux new-session -d -s "claude-$$"
-  tmux send-keys -t "claude-$$" "dev && claude \"\$(cat $prompt_file)\" && rm $prompt_file" Enter
+  tmux send-keys -t "claude-$$" "$launch_cmd" Enter
   tmux attach -t "claude-$$"
   exit
 fi
@@ -49,7 +67,7 @@ if (( pane_count >= 6 )); then
     exit 1
   fi
   tmux select-pane -t "$idle_pane"
-  tmux send-keys -t "$idle_pane" "dev && claude \"\$(cat $prompt_file)\" && rm $prompt_file" Enter
+  tmux send-keys -t "$idle_pane" "$launch_cmd" Enter
   exit
 fi
 
@@ -77,4 +95,4 @@ else
   ')
   tmux split-window -v -t "$target_pane"
 fi
-tmux send-keys "dev && claude \"\$(cat $prompt_file)\" && rm $prompt_file" Enter
+tmux send-keys "$launch_cmd" Enter
