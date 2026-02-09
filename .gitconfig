@@ -11,7 +11,7 @@
 	lga = log --graph --oneline --decorate --all
 [core]
 	editor = vim
-	hooksPath = /Users/kyohei_suzuki/.config/git/hooks
+	hooksPath = ~/.config/git/hooks
 [fetch]
 	prune = true
 [credential]
