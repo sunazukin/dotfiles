@@ -41,6 +41,14 @@ fi
 
 echo "Worktree: $worktree_path"
 
+# settings.local.json をワークツリーにコピー
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
+if [[ -n "$repo_root" && -f "$repo_root/.claude/settings.local.json" ]]; then
+  mkdir -p "$worktree_path/.claude"
+  cp "$repo_root/.claude/settings.local.json" "$worktree_path/.claude/settings.local.json"
+  echo "Copied .claude/settings.local.json"
+fi
+
 # tmux ペインに引き渡すので trap を解除（ペイン内で rm される）
 trap - EXIT
 
