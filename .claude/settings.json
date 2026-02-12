@@ -3,5 +3,18 @@
     "allow": [
       "mcp__pencil"
     ]
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/suzuki/.claude/scripts/notify.sh"
+          }
+        ]
+      }
+    ]
   }
 }
