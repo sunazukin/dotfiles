@@ -64,6 +64,10 @@ function dev() {
     moveto=$(ghq-path)
     cd "${moveto}" || return 1
 
+    # mise のセットアップ
+    mise trust
+    mise i
+
     # rename session if in tmux
     if [[ -n ${TMUX} ]]; then
         local repo_name
