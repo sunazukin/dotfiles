@@ -9,7 +9,12 @@ if [[ $# -lt 1 ]]; then
 fi
 
 prompt="$*"
-claude_prompt="以下の内容をまずプランモードで計画してから実装してください: $prompt"
+claude_prompt="以下の内容をまずプランモードで計画してから実装してください: $prompt
+
+## 作業ディレクトリについて
+- worktree パス: \${CLAUDE_WORKTREE_PATH}
+- ファイルの編集・作成は必ず worktree パス配下で行ってください
+- pnpm, git 等のコマンドも worktree ディレクトリで実行してください（cd \${CLAUDE_WORKTREE_PATH} してから実行）"
 prompt_file=$(mktemp /tmp/claude-pane-XXXXXX)
 trap 'rm -f "$prompt_file"' EXIT
 printf '%s' "$claude_prompt" > "$prompt_file"
@@ -52,10 +57,9 @@ fi
 # tmux ペインに引き渡すので trap を解除（ペイン内で rm される）
 trap - EXIT
 
-# ワークツリー移動 + セットアップ + Claude 起動のコマンドを構築
-launch_cmd="cd '${worktree_path}'"
-launch_cmd+=" && { [[ -x scripts/setup-worktree.sh ]] && ./scripts/setup-worktree.sh || true; }"
-launch_cmd+=" && claude \"\$(cat $prompt_file)\" && rm $prompt_file"
+# セットアップは worktree で実行、Claude は元リポジトリで起動
+launch_cmd="cd '${worktree_path}' && { [[ -x scripts/setup-worktree.sh ]] && ./scripts/setup-worktree.sh || true; } && cd '${repo_root}'"
+launch_cmd+=" && CLAUDE_WORKTREE_PATH='${worktree_path}' claude \"\$(cat $prompt_file)\" && rm $prompt_file"
 
 # tmux 外 → 新しいセッションを作成してアタッチ
 if [[ -z "${TMUX:-}" ]]; then
