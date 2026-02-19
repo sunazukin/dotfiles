@@ -59,7 +59,7 @@ trap - EXIT
 
 # セットアップは worktree で実行、Claude は元リポジトリで起動
 launch_cmd="cd '${worktree_path}' && { [[ -x scripts/setup-worktree.sh ]] && ./scripts/setup-worktree.sh || true; } && cd '${repo_root}'"
-launch_cmd+=" && CLAUDE_WORKTREE_PATH='${worktree_path}' claude \"\$(cat $prompt_file)\" && rm $prompt_file"
+launch_cmd+=" && CLAUDE_WORKTREE_PATH='${worktree_path}' claude --add-dir '${worktree_path}' \"\$(cat $prompt_file)\" && rm $prompt_file"
 
 # tmux 外 → 新しいセッションを作成してアタッチ
 if [[ -z "${TMUX:-}" ]]; then
