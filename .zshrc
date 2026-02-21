@@ -4,6 +4,7 @@ alias python='python3'
 alias k='kubectl'
 alias awsume='. awsume'
 alias cl='clear'
+alias pn='claude-pane'
 
 # zsh-completions&autosuggestions
 if type brew &>/dev/null; then
