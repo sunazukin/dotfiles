@@ -42,5 +42,10 @@ for file in "${files[@]}"; do
   echo "Linked: $dest -> $src"
 done
 
+# マシン固有の git 設定を ~/.gitconfig.local に書き込む（dotfiles には含めない）
+# hooksPath を絶対パスで設定（~ 展開が環境によって効かないケースへの対策）
+git config --file "$HOME/.gitconfig.local" core.hooksPath "$HOME/.config/git/hooks"
+echo "Set: ~/.gitconfig.local core.hooksPath -> $HOME/.config/git/hooks"
+
 echo ""
 echo "Done! All dotfiles have been linked."
