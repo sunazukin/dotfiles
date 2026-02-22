@@ -11,7 +11,6 @@
 	lga = log --graph --oneline --decorate --all
 [core]
 	editor = vim
-	hooksPath = ~/.config/git/hooks
 [fetch]
 	prune = true
 [credential]
@@ -22,3 +21,5 @@
 	user = sunazukin
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[include]
+	path = ~/.gitconfig.local
