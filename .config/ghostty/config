@@ -3,6 +3,10 @@ keybind = global:cmd+grave_accent=toggle_quick_terminal
 keybind = shift+enter=text:\x1b\r
 
 # --- 見た目・フォント ---
+# フォント設定（未インストールの場合はシステムデフォルトにフォールバック）
+font-family = JetBrains Mono
+font-size = 14
+
 # 行間を少し広げてモダンにする
 adjust-cell-height = 10%
 
@@ -21,8 +25,10 @@ window-padding-x = 10
 window-padding-y = 10
 window-padding-balance = true
 
-# 背景
-background-image = ~/Downloads/cat-image.jpg
+# 背景画像
+# install.sh が ~/Downloads/cat-image.jpg を ~/.config/ghostty/bg.jpg にコピーする
+# 手動で配置する場合: cp ~/Downloads/cat-image.jpg ~/.config/ghostty/bg.jpg
+background-image = ~/.config/ghostty/bg.jpg
 background-image-opacity = 0.2
 background-image-fit = cover
 
