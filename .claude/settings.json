@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/suzuki/.claude/scripts/notify.sh"
+            "command": "$HOME/.claude/scripts/notify.sh"
           }
         ]
       }
