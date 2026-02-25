@@ -42,6 +42,17 @@ for file in "${files[@]}"; do
   echo "Linked: $dest -> $src"
 done
 
+# Ghostty 背景画像のセットアップ
+# ~/Downloads/cat-image.jpg が存在し、まだ移行されていない場合にコピーする
+GHOSTTY_BG="$HOME/.config/ghostty/bg.jpg"
+DOWNLOADS_BG="$HOME/Downloads/cat-image.jpg"
+if [[ -f "$DOWNLOADS_BG" && ! -f "$GHOSTTY_BG" ]]; then
+  cp "$DOWNLOADS_BG" "$GHOSTTY_BG"
+  echo "Copied: $DOWNLOADS_BG -> $GHOSTTY_BG"
+elif [[ ! -f "$GHOSTTY_BG" ]]; then
+  echo "Note: Ghostty 背景画像が見つかりません。~/.config/ghostty/bg.jpg に画像を配置してください。"
+fi
+
 # マシン固有の git 設定を ~/.gitconfig.local に書き込む（dotfiles には含めない）
 # hooksPath を絶対パスで設定（~ 展開が環境によって効かないケースへの対策）
 git config --file "$HOME/.gitconfig.local" core.hooksPath "$HOME/.config/git/hooks"
