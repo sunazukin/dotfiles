@@ -2,7 +2,8 @@
 alias ll='ls -al'
 alias python='python3'
 alias k='kubectl'
-alias awsume='. awsume'
+unalias awsume 2>/dev/null
+awsume() { source "$(mise which awsume)" "$@"; }
 alias cl='clear'
 alias pn='claude-pane'
 
