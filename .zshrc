@@ -56,8 +56,6 @@ precmd() {
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate zsh)"
-# mise が uv の bin ディレクトリを PATH に追加しないため手動で追加
-export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # ghq/gwqの補助
 function ghq-path() {
@@ -96,3 +94,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"

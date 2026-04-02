@@ -25,11 +25,23 @@ printf '%s' "$claude_prompt" > "$prompt_file"
 
 # Claude CLI で英語ブランチ名を自動生成
 echo "Generating branch name..."
-branch_name=$(claude -p "You are a git branch name generator. Convert this feature description to a git branch name. Rules: 1) English only 2) kebab-case 3) Add feature/ prefix 4) Max 5 words after prefix 5) Output ONLY the branch name. Description: $prompt") || {
+
+# 一時的な設定でhookを無効化するため、専用のディレクトリを作成
+temp_claude_dir=$(mktemp -d /tmp/claude-pane-XXXXXX)
+temp_settings="$temp_claude_dir/.claude/settings.json"
+mkdir -p "$temp_claude_dir/.claude"
+echo '{"hooks": {}}' > "$temp_settings"
+
+trap 'rm -rf "$prompt_file" "$temp_claude_dir"' EXIT
+
+branch_output=$(cd "$temp_claude_dir" && claude -p "Output ONLY a git branch name (format: feature/name). Rules: English, kebab-case, max 5 words. NO explanation. Description: $prompt" 2>&1)
+branch_name=$(echo "$branch_output" | grep -oE 'feature/[a-z0-9-]+' | head -1)
+
+if [[ -z "$branch_name" ]]; then
   echo "Error: ブランチ名の生成に失敗しました"
+  echo "Output: $branch_output"
   exit 1
-}
-branch_name=$(echo "$branch_name" | head -1 | xargs | tr -d '`')
+fi
 
 if [[ -z "$branch_name" ]]; then
   echo "Error: ブランチ名が空です"
