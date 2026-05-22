@@ -23,19 +23,7 @@ prompt_file=$(mktemp /tmp/claude-pane-XXXXXX)
 trap 'rm -f "$prompt_file"' EXIT
 printf '%s' "$claude_prompt" > "$prompt_file"
 
-# Claude CLI で英語ブランチ名を自動生成
-echo "Generating branch name..."
-branch_name=$(claude -p "You are a git branch name generator. Convert this feature description to a git branch name. Rules: 1) English only 2) kebab-case 3) Add feature/ prefix 4) Max 5 words after prefix 5) Output ONLY the branch name. Description: $prompt") || {
-  echo "Error: ブランチ名の生成に失敗しました"
-  exit 1
-}
-branch_name=$(echo "$branch_name" | head -1 | xargs | tr -d '`')
-
-if [[ -z "$branch_name" ]]; then
-  echo "Error: ブランチ名が空です"
-  exit 1
-fi
-
+branch_name="feature/$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 8)"
 echo "Branch: $branch_name"
 
 # worktree を作成
