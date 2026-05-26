@@ -23,7 +23,7 @@ prompt_file=$(mktemp /tmp/claude-pane-XXXXXX)
 trap 'rm -f "$prompt_file"' EXIT
 printf '%s' "$claude_prompt" > "$prompt_file"
 
-branch_name="feature/$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 8)"
+branch_name="feature/$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 8 || true)"
 echo "Branch: $branch_name"
 
 # worktree を作成
