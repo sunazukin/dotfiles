@@ -3,6 +3,10 @@ set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 
+# private submodule を取得（認証が必要なため、失敗しても install 全体は止めない）
+git -C "$DOTFILES" submodule update --init --recursive \
+  || echo "Warn: private submodule の取得に失敗しました（未取得のまま続行します）"
+
 # symlink対象のファイル一覧（dotfiles内の相対パス）
 files=(
   .zshrc
@@ -20,14 +24,14 @@ files=(
   .claude/setting.json
 )
 
-for file in "${files[@]}"; do
-  src="$DOTFILES/$file"
-  dest="$HOME/$file"
+# src を dest に symlink する（ファイル・ディレクトリ共通）
+link() {
+  local src="$1" dest="$2"
 
   # 親ディレクトリを作成
   mkdir -p "$(dirname "$dest")"
 
-  # 既存ファイルがシンボリックリンクでなければバックアップ
+  # 既存の実体（シンボリックリンクでない）はバックアップ
   if [[ -e "$dest" && ! -L "$dest" ]]; then
     echo "Backup: $dest -> ${dest}.bak"
     mv "$dest" "${dest}.bak"
@@ -40,7 +44,19 @@ for file in "${files[@]}"; do
 
   ln -s "$src" "$dest"
   echo "Linked: $dest -> $src"
+}
+
+# ホーム鏡像のファイル群
+for file in "${files[@]}"; do
+  link "$DOTFILES/$file" "$HOME/$file"
 done
+
+# private submodule 配下（dotfiles 内のパスと $HOME 側のパスが異なるため個別指定）
+if [[ -e "$DOTFILES/private/.claude/scheduled-tasks" ]]; then
+  link "$DOTFILES/private/.claude/scheduled-tasks" "$HOME/.claude/scheduled-tasks"
+else
+  echo "Skip: private/.claude/scheduled-tasks が未取得のためリンクしません"
+fi
 
 # Ghostty 背景画像のセットアップ
 # ~/Downloads/cat-image.jpg が存在し、まだ移行されていない場合にコピーする
