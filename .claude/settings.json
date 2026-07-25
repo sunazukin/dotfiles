@@ -10,7 +10,7 @@
       "mcp__pencil"
     ]
   },
-  "model": "sonnet",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "Notification": [
       {
@@ -24,5 +24,8 @@
       }
     ]
   },
-  "remoteControlAtStartup": false
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true
 }
