@@ -27,5 +27,6 @@
   "effortLevel": "high",
   "tui": "fullscreen",
   "remoteControlAtStartup": false,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true
 }
