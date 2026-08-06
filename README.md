@@ -26,6 +26,9 @@ cd dotfiles
 | `.config/ghostty/config` | `~/.config/ghostty/config` |
 | `.claude/settings.json` | `~/.claude/settings.json` |
 | `.claude/setting.json` | `~/.claude/setting.json` |
+| `.claude/skills/next-pr` | `~/.claude/skills/next-pr` |
 | `private/.claude/scheduled-tasks` | `~/.claude/scheduled-tasks` |
+
+`.claude/skills/` はスキル単位でリンクする（ディレクトリごとリンクすると、dotfiles で管理していないスキルが隠れてしまうため）。スキルを追加したら `install.sh` の `files` とこの表の両方に足す。
 
 `private/` は private submodule（[dotfiles-private](https://github.com/sunazukin/dotfiles-private)）。認証情報は置かず、公開できない設定のみを管理する。

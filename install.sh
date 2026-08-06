@@ -22,6 +22,7 @@ files=(
   .config/ghostty/config
   .claude/settings.json
   .claude/setting.json
+  .claude/skills/next-pr
 )
 
 # src を dest に symlink する（ファイル・ディレクトリ共通）
