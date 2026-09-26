@@ -8,6 +8,8 @@
       "Grep",
       "Bash(ls *)",
       "Bash(gh stack *)",
+      "Bash(git worktree remove *)",
+      "Bash(git -C * worktree remove *)",
       "mcp__pencil"
     ],
     "defaultMode": "auto"
