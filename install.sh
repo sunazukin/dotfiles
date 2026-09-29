@@ -21,7 +21,6 @@ files=(
   .config/gwq/config.toml
   .config/ghostty/config
   .claude/settings.json
-  .claude/setting.json
   .claude/skills/next-pr
 )
 

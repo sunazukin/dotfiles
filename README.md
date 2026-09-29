@@ -25,7 +25,6 @@ cd dotfiles
 | `.config/gwq/config.toml` | `~/.config/gwq/config.toml` |
 | `.config/ghostty/config` | `~/.config/ghostty/config` |
 | `.claude/settings.json` | `~/.claude/settings.json` |
-| `.claude/setting.json` | `~/.claude/setting.json` |
 | `.claude/skills/next-pr` | `~/.claude/skills/next-pr` |
 | `private/.claude/scheduled-tasks` | `~/.claude/scheduled-tasks` |
 
