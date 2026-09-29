@@ -32,5 +32,6 @@
   "tui": "fullscreen",
   "remoteControlAtStartup": false,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "language": "japanese"
 }
