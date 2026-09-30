@@ -14,6 +14,12 @@
     ],
     "defaultMode": "auto"
   },
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Removing git worktrees under /Users/suzuki/ghq/github.com/sunazukin/life-recoding/.claude/worktrees/ with `git worktree remove` / `git -C <repo> worktree remove <path>` (without --force), including a for loop over explicitly listed worktree names, is allowed. This is the routine cleanup done by the daily-cleanup-branches task / cleanup-branches skill after verifying each worktree is clean and merged."
+    ]
+  },
   "env": {
     "DISABLE_TELEMETRY": "1",
     "DISABLE_ERROR_REPORTING": "1",
