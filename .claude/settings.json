@@ -9,7 +9,7 @@
       "Bash(ls *)",
       "Bash(gh stack *)",
       "Bash(git worktree remove *)",
-      "Bash(git -C * worktree remove *)",
+      "Bash(git -C /Users/suzuki/ghq/github.com/sunazukin/life-recoding worktree remove *)",
       "mcp__pencil"
     ],
     "defaultMode": "auto"
