@@ -40,6 +40,17 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.claude/scripts/check-japanese.py",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "effortLevel": "high",
