@@ -21,6 +21,7 @@ files=(
   .config/gwq/config.toml
   .config/ghostty/config
   .claude/settings.json
+  .claude/scripts/check-japanese.py
   .claude/skills/next-pr
 )
 
