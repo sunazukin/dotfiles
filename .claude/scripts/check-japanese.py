@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Stop フック: 直近のユーザー発言以降に書いた文章に英語だけの文が混ざっていたら止める。
+"""Stop フック: ターンの最後の返答に英語だけの文が混ざっていたら止める。
 
-ツール呼び出しの合間の一行ナレーションが英語になる事故が繰り返したため
-（respond-in-japanese メモリー参照）、最後の返答だけでなくターン内の
-assistant テキストブロックをすべて検査する。
+検査するのは、最後のツール呼び出しより後に書いた assistant テキスト（＝最後の報告）だけ。
+ツールの合間の一行ナレーションは作業ログ扱いで英語でもよい（2026-10-07 本人指示）。
 """
 import json
 import re
@@ -60,7 +59,8 @@ def main():
         if is_real_user_message(e):
             start = i + 1
 
-    offenders = []
+    # 最後のツール呼び出しより後のテキストだけを残す（ツールを呼ぶたびに捨てる）
+    final_texts = []
     for e in entries[start:]:
         if e.get("type") != "assistant":
             continue
@@ -68,10 +68,16 @@ def main():
         if not isinstance(content, list):
             continue
         for c in content:
-            if isinstance(c, dict) and c.get("type") == "text":
-                t = c.get("text") or ""
-                if looks_english(t):
-                    offenders.append(t.strip().replace("\n", " ")[:80])
+            if not isinstance(c, dict):
+                continue
+            if c.get("type") == "tool_use":
+                final_texts = []
+            elif c.get("type") == "text":
+                final_texts.append(c.get("text") or "")
+
+    offenders = [
+        t.strip().replace("\n", " ")[:80] for t in final_texts if looks_english(t)
+    ]
 
     if not offenders:
         return 0
@@ -81,7 +87,7 @@ def main():
         "reason": (
             "英語で書いた文が混ざっています（ユーザー向けの出力は常に日本語）。\n"
             f"{listed}\n"
-            "上の内容を日本語で言い直してください。ツールの合間の一言も日本語で書くこと。"
+            "上の内容を日本語で言い直してください。"
         ),
     }, ensure_ascii=False))
     return 0
