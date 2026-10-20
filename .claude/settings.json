@@ -61,6 +61,11 @@
   "language": "japanese",
   "sandbox": {
     "enabled": true,
-    "excludedCommands": ["gh *"]
+    "excludedCommands": [
+      "gh *",
+      "git -C * fetch *",
+      "git -C * worktree remove *",
+      "git -C * worktree prune"
+    ]
   }
 }
