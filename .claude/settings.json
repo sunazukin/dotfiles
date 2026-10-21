@@ -65,7 +65,8 @@
       "gh *",
       "git -C * fetch *",
       "git -C * worktree remove *",
-      "git -C * worktree prune"
+      "git -C * worktree prune",
+      "git -C * branch -d *"
     ]
   }
 }
