@@ -66,7 +66,8 @@
       "git -C * fetch *",
       "git -C * worktree remove *",
       "git -C * worktree prune",
-      "git -C * branch -d *"
+      "git -C * branch -d *",
+      "curl *127.0.0.1:7001/*"
     ]
   }
 }
