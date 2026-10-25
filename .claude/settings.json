@@ -25,7 +25,8 @@
     "DISABLE_ERROR_REPORTING": "1",
     "DISABLE_BUG_COMMAND": "1",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "pnpm_config_store_dir": "/Users/suzuki/Library/pnpm/store"
   },
   "cleanupPeriodDays": 30,
   "model": "claude-opus-5",
@@ -63,11 +64,23 @@
     "enabled": true,
     "excludedCommands": [
       "gh *",
-      "git -C * fetch *",
-      "git -C * worktree remove *",
-      "git -C * worktree prune",
-      "git -C * branch -d *",
+      "git fetch *",
+      "git worktree add *",
+      "git worktree remove *",
+      "git worktree prune",
+      "git branch -d *",
       "curl *127.0.0.1:7001/*"
-    ]
+    ],
+    "network": {
+      "allowUnixSockets": ["/private/tmp/claude-501/tsx-501"]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/Library/pnpm/store",
+        "/private/tmp/pnpm-dir-locks-501",
+        "/private/tmp/pnpm-store-operation-locks-501",
+        "/private/tmp/pnpm-verify-deps-install-locks-501"
+      ]
+    }
   }
 }
