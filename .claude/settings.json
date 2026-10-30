@@ -52,6 +52,16 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME\"/.claude/hooks/block-downloads.sh"
+          }
+        ]
+      }
     ]
   },
   "effortLevel": "high",
@@ -82,5 +92,6 @@
         "/private/tmp/pnpm-verify-deps-install-locks-501"
       ]
     }
-  }
+  },
+  "claudeMdExcludes": ["**/Downloads/**"]
 }
