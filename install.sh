@@ -22,6 +22,7 @@ files=(
   .config/ghostty/config
   .claude/settings.json
   .claude/scripts/check-japanese.py
+  .claude/hooks/block-downloads.sh
   .claude/skills/next-pr
 )
 
